@@ -1,25 +1,50 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 )
 
-
-func	main(){
-	makeRequest()
+func main() {
+	getWhois("google.com")
+	getReverseDNS("google.com")
+	getDNSLookup("google.com")
 }
-func makeRequest() {
-	resp, err := http.Get("http://google.com")
-	if err != nil {
-		log.Fatalln(err)
-	}
-	defer resp.Body.Close()
-	body, err := ioutil.ReadAll(resp.Body)
 
+func getWhois(domain string) {
+	srcUrl := fmt.Sprintf("https://api.hackertarget.com/whois/?q=%s", domain)
+	body := getResponse(srcUrl, "GET")
+	fmt.Println(string(body))
+}
+
+func getReverseDNS(domain string) {
+	srcUrl := fmt.Sprintf("https://api.hackertarget.com/reversedns/?q=%s", domain)
+	body := getResponse(srcUrl, "GET")
+	fmt.Println(string(body))
+}
+
+func getDNSLookup(domain string) {
+	srcUrl := fmt.Sprintf("https://api.hackertarget.com/dnslookup/?q=%s", domain)
+	body := getResponse(srcUrl, "GET")
+	fmt.Println(string(body))
+}
+
+func getResponse(srcURL, httpMethod string) []byte {
+	client := &http.Client{}
+	req, err := http.NewRequest(httpMethod, srcURL, nil)
+	checkerr(err)
+	resp, err := client.Do(req)
+	checkerr(err)
+	defer resp.Body.Close()
+
+	bodybyte, err := ioutil.ReadAll(resp.Body)
+	checkerr(err)
+	return bodybyte
+}
+
+func checkerr(err error) {
 	if err != nil {
-		log.Fatalln(err)
+		fmt.Println(err)
 	}
-	log.Println(string(body))
 }

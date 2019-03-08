@@ -1,15 +1,32 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 )
 
 func main() {
-	getWhois("google.com")
-	getReverseDNS("google.com")
-	getDNSLookup("google.com")
+	//getWhois("google.com")
+	//getReverseDNS("google.com")
+	//getDNSLookup("google.com")
+
+	domainIn := flag.String("domain", "", " the domain you want to look at")
+	whois := flag.Bool("whois", false, "whois against the domain pass in argument")
+	reverse := flag.Bool("reverse", false, "reverse lookup against the domain")
+	lookup := flag.Bool("lookup", false, "loolup against the targeted domain")
+	flag.Parse()
+
+	if *whois {
+		getWhois(*domainIn)
+	}
+	if *lookup {
+		getDNSLookup(*domainIn)
+	}
+	if *reverse {
+		getReverseDNS(*domainIn)
+	}
 }
 
 func getWhois(domain string) {

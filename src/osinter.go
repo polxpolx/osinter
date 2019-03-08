@@ -12,10 +12,10 @@ func main() {
 	//getReverseDNS("google.com")
 	//getDNSLookup("google.com")
 
-	domainIn := flag.String("domain", "", " the domain you want to look at")
-	whois := flag.Bool("whois", false, "whois against the domain pass in argument")
-	reverse := flag.Bool("reverse", false, "reverse lookup against the domain")
-	lookup := flag.Bool("lookup", false, "loolup against the targeted domain")
+	domainIn := flag.String("domain", "", " the domain you run the action against")
+	whois := flag.Bool("whois", false, "domain whois")
+	reverse := flag.Bool("reverse", false, "reverse lookup")
+	lookup := flag.Bool("lookup", false, "domain lookup")
 	flag.Parse()
 
 	if *whois {

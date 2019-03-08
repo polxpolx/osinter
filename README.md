@@ -1,4 +1,4 @@
-# osinter- A simple osint tool
+# Osinter- A simple osint tool
 Simple go program to do osing against a define domain name.
 
 ## Getting Started

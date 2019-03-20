@@ -28,4 +28,10 @@ Usage of ./osinter:
  ## Example
  
 Check if the email has been powned using famous webiste from Troy Hunt https://haveibeenpwned.com/
-``./osinter -email theemailiwantocheck@emailprovider.com -pwned ``
+
+``./osinter -pwned -email myemailiwantocheck@emailprovider.com  ``
+
+## TODO
+
+[ ] Censys 
+[ ] Shodan

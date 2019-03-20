@@ -1,13 +1,10 @@
 package main
 
 import (
-	"bytes"
-	"encoding/json"
 	"flag"
 	"fmt"
-	"io/ioutil"
+	"github.com/reg0l/osinter/src/utils"
 	"log"
-	"net/http"
 )
 
 const havebeenpowned_header_user_agent string = "Osint-Tools-For-Defense-Team-OSINTER"

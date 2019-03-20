@@ -58,8 +58,12 @@ func main() {
 		getHaveBeenPowned(*email)
 	}
 	if *censysaccount {
+
+		// function to pick env variables to be consumed by Censys client
 		apiidenv := os.Getenv("CENSYS_API_ID")
 		apisecretenv := os.Getenv("CENSYS_API_SECRET")
+
+		// we verify if the env variable has been set and are not empty.
 		if apiidenv != "" && apisecretenv != "" {
 			body := censys.ClientCensys(apiidenv, apisecretenv, censysaccounturl, 30, "GET", censysheaderuseragent, censysacceptheader)
 			log.Printf("%s", body)

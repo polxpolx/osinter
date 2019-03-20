@@ -23,7 +23,7 @@ func main() {
 	reverse := flag.Bool("reverse", false, "reverse lookup")
 	reverseIp := flag.Bool("reverse-ip", false, "reverse ip")
 	lookup := flag.Bool("lookup", false, "domain lookup")
-	powned := flag.Bool("powned", false, "email been powned")
+	powned := flag.Bool("powned", false, " check email passed in argument to Troy Hunt website https://haveibeenpwned.com/")
 	email := flag.String("email", "", "email to check if this email has been powned")
 	flag.Parse()
 

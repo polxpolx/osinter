@@ -19,7 +19,10 @@ Usage of ./osinter:
         reverse lookup against the domain
   -whois
         whois against the domain pass in argument
-  -
+  -email
+        email pass in argument for the pwned function
+  -pwned
+        check email passed in argument to Troy Hunt website https://haveibeenpwned.com/
  ```
  
  ## Example

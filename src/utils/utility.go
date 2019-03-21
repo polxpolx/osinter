@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/reg0l/osinter/src/censys"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -43,4 +44,12 @@ func Checkerr(err error) {
 	if err != nil {
 		fmt.Println(err)
 	}
+}
+
+func Marshallizer(jsoninite censys.CensysJson) []byte {
+	c, err := json.Marshal(jsoninite)
+	if err != nil {
+		panic(err)
+	}
+	return c
 }

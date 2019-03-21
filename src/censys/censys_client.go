@@ -1,64 +1,73 @@
 package censys
 
 import (
+	"bytes"
 	"fmt"
-	"github.com/reg0l/osinter/src/utils"
 	"io/ioutil"
 	"log"
 	"net/http"
 )
 
-func ClientCensys(apiid string, apisecret string, url string, timeout int, httpmethod string, headeruseragent string, acceptheader string) []byte {
+func ClientCensys(ApiId string, ApiSecret string, url string, timeout int, HttpMethod string, HeaderUserAgent string, HeaderAccept string, json []byte) []byte {
 	client := &http.Client{}
-	req, err := http.NewRequest(httpmethod, url, nil)
-	utils.Checkerr(err)
+
+	req, err := http.NewRequest(HttpMethod, url, bytes.NewBuffer(json))
+
+	Checkerr(err)
 
 	//setup cleaned http header
-	req.Header.Add("User-Agent", headeruseragent)
-	req.Header.Add("Accept", acceptheader)
+	req.Header.Add("User-Agent", HeaderUserAgent)
+	req.Header.Add("Accept", HeaderAccept)
 	req.Header.Add("Accept-Language", "en-US,en;q=0.8")
 
 	// setup http auth
-	req.SetBasicAuth(apiid, apisecret)
+	req.SetBasicAuth(ApiId, ApiSecret)
 
 	// run the client request
 	resp, err := client.Do(req)
-	utils.Checkerr(err)
+	Checkerr(err)
 	defer resp.Body.Close()
 
-	//check if the status code returned is different of 200. Fatal if not.
-	if resp.StatusCode != 200 {
-		fmt.Println("Something went wrong:", resp.StatusCode)
-		bodybyte, err := ioutil.ReadAll(resp.Body)
-		utils.Checkerr(err)
-		log.Printf("%s", bodybyte)
-		log.Fatal("Fatal error !")
-	}
 	// check query could not be parsed
 	if resp.StatusCode == 400 {
-		log.Fatalln("Query could not be parsed", resp.StatusCode)
+		log.Fatalln("Query could not be parsed: ", resp.StatusCode)
 	}
 
 	// page not found
 	if resp.StatusCode == 404 {
-		log.Fatal("Page not found", resp.StatusCode)
+		log.Fatal("Page not found: ", resp.StatusCode)
 	}
 
 	// check authentication issues
 	if resp.StatusCode == 403 {
-		log.Fatalln("Unauthorized. You must authenticate with a valid API ID and secret", resp.StatusCode)
+		log.Fatalln("Unauthorized. You must authenticate with a valid API ID and secret: ", resp.StatusCode)
 	}
 
 	// check if rate limit has been exceeded
 	if resp.StatusCode == 429 {
-		log.Fatalln("Rate limit exceeded :", resp.StatusCode)
+		log.Fatalln("Rate limit exceeded: ", resp.StatusCode)
 	}
 
 	// check if unknown error happened
 	if resp.StatusCode == 500 {
-		log.Fatalln("Unknown error occurred :", resp.StatusCode)
+		log.Fatalln("Unknown error occurred: ", resp.StatusCode)
+	}
+
+	//check if the status code returned is different of 200. Fatal if not.
+	if resp.StatusCode != 200 {
+		fmt.Println("Something went wrong: ", resp.StatusCode)
+		bodybyte, err := ioutil.ReadAll(resp.Body)
+		Checkerr(err)
+		log.Printf("%s", bodybyte)
+		log.Fatal("Fatal error !")
 	}
 
 	bodybyte, err := ioutil.ReadAll(resp.Body)
 	return bodybyte
+}
+
+func Checkerr(err error) {
+	if err != nil {
+		fmt.Println(err)
+	}
 }

@@ -14,7 +14,7 @@ func ClientCensys(ApiId string, ApiSecret string, url string, timeout int, HttpM
 	req, err := http.NewRequest(HttpMethod, url, bytes.NewBuffer(json))
 
 	Checkerr(err)
-
+	log.Printf("%s", json)
 	//setup cleaned http header
 	req.Header.Add("User-Agent", HeaderUserAgent)
 	req.Header.Add("Accept", HeaderAccept)

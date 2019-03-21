@@ -53,3 +53,8 @@ func Marshallizer(jsoninite censys.CensysJson) []byte {
 	}
 	return c
 }
+
+func PrettifyPrint(b []byte) {
+	prettifyBody, _ := PrettifyJson(b)
+	fmt.Printf("%s", prettifyBody)
+}

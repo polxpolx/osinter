@@ -31,6 +31,8 @@ func main() {
 	censysin := flag.String("censys", "", "call to censys.io api. Support the method account, data and search")
 	censysquery := flag.String("censys-query", "", "Censys.io query for the search method.")
 	censysindex := flag.String("censys-index", "", "Censys.io index for the search method.")
+	censyspage := flag.Int("censys-page", 1, "Censys.io pages number when search api invocked")
+	censysflatten := flag.Bool("censys-flatten", true, "Format the censys's search api results. Default is true")
 	flag.Parse()
 
 	if *whois && *domain != "" {
@@ -67,19 +69,15 @@ func main() {
 				// Call Censys account method
 				body := censys.ClientCensys(CensysApiId, CensysApiSecret, censys.CensysUrlAccount, 30, "GET", censys.CensysHeaderUserAgent, censys.CensysHeaderAccept, nil)
 
-				// Prettify return json
-				prettifyBody, _ := utils.PrettifyJson(body)
-
-				fmt.Printf("%s", prettifyBody)
+				// Prettify print of the json
+				utils.PrettifyPrint(body)
 
 			case "data":
 				// Call Censys data method
 				body := censys.ClientCensys(CensysApiId, CensysApiSecret, censys.CensysUrlData, 30, "GET", censys.CensysHeaderUserAgent, censys.CensysHeaderAccept, nil)
 
-				// Prettify return json
-				prettifyBody, _ := utils.PrettifyJson(body)
-
-				fmt.Printf("%s", prettifyBody)
+				// Prettify print of the json
+				utils.PrettifyPrint(body)
 
 			case "search":
 				if *censysquery != "" && *censysindex != "" {
@@ -87,7 +85,9 @@ func main() {
 					search := censys.CensysJson{}
 
 					// fil CensysJson struct. See censys_model.go for more info
-					search.Query = *censysindex
+					search.Query = *censysquery
+					search.Pages = *censyspage
+					search.Flatten = *censysflatten
 
 					// Marshalized search element to be passed to CensysClient
 					jsonMarshaled := utils.Marshallizer(search)
@@ -101,10 +101,8 @@ func main() {
 						// Call Censys search method
 						body := censys.ClientCensys(CensysApiId, CensysApiSecret, urlConcat, 30, "POST", censys.CensysHeaderUserAgent, censys.CensysHeaderAccept, jsonMarshaled)
 
-						// Prettify return json
-						prettifyBody, _ := utils.PrettifyJson(body)
-
-						fmt.Printf("%s", prettifyBody)
+						// Prettify print of the json
+						utils.PrettifyPrint(body)
 
 					case "certificates":
 						// prepare url string concat CensysSearchURL and CensysIndex & check if censys-index argument is valid. If not FATAL
@@ -115,10 +113,9 @@ func main() {
 						// Call Censys search method
 						body := censys.ClientCensys(CensysApiId, CensysApiSecret, urlConcat, 30, "POST", censys.CensysHeaderUserAgent, censys.CensysHeaderAccept, jsonMarshaled)
 
-						// Prettify return json
-						prettifyBody, _ := utils.PrettifyJson(body)
+						// Prettify print of the json
+						utils.PrettifyPrint(body)
 
-						fmt.Printf("%s", prettifyBody)
 					case "websites":
 						// prepare url string concat CensysSearchURL and CensysIndex & check if censys-index argument is valid. If not FATAL
 						urlConcat := censys.CensysUrlSearch + "/" + censys.CensysIndexWebsites
@@ -127,10 +124,8 @@ func main() {
 						// Call Censys search method
 						body := censys.ClientCensys(CensysApiId, CensysApiSecret, urlConcat, 30, "POST", censys.CensysHeaderUserAgent, censys.CensysHeaderAccept, jsonMarshaled)
 
-						// Prettify return json
-						prettifyBody, _ := utils.PrettifyJson(body)
-
-						fmt.Printf("%s", prettifyBody)
+						// Prettify print of the json
+						utils.PrettifyPrint(body)
 
 					default:
 						log.Fatalln(" A valid censys-index argument need to be pass. We're accepting: websites, ipv4 or certificates.")
@@ -184,6 +179,6 @@ func getHaveBeenPowned(email string) {
 func getIpInfo(ipcheck string) {
 	srcUrl := fmt.Sprintf("https://ipinfo.io/%s/json", ipcheck)
 	body := utils.GetResponse(srcUrl, "GET", generic_header_user_agent, "application/json")
-	prettifyBody, _ := utils.PrettifyJson(body)
-	fmt.Printf("%s", prettifyBody)
+	// Prettify print of the json
+	utils.PrettifyPrint(body)
 }

@@ -92,40 +92,19 @@ func main() {
 					// Marshalized search element to be passed to CensysClient
 					jsonMarshaled := utils.Marshallizer(search)
 					var urlConcat string
-					// TODO manage exception using more elegant manner
+
 					switch *censysindex {
 					case "ipv4":
 						// prepare url string concat CensysSearchURL and CensysIndex & check if censys-index argument is valid. If not FATAL
 						urlConcat = censys.CensysUrlSearch + "/" + censys.CensysIndexIPV4
-						//log.Println("Prepare call to: ", urlConcat)
-						//// Call Censys search method
-						//body := censys.ClientCensys(CensysApiId, CensysApiSecret, urlConcat, 30, "POST", censys.CensysHeaderUserAgent, censys.CensysHeaderAccept, jsonMarshaled)
-						//
-						//// Prettify print of the json
-						//utils.PrettifyPrint(body)
 
 					case "certificates":
 						// prepare url string concat CensysSearchURL and CensysIndex & check if censys-index argument is valid. If not FATAL
 						urlConcat = censys.CensysUrlSearch + "/" + censys.CensysIndexCertificate
 
-						//log.Println("Prepare call to: ", urlConcat)
-						//
-						//// Call Censys search method
-						//body := censys.ClientCensys(CensysApiId, CensysApiSecret, urlConcat, 30, "POST", censys.CensysHeaderUserAgent, censys.CensysHeaderAccept, jsonMarshaled)
-						//
-						//// Prettify print of the json
-						//utils.PrettifyPrint(body)
-
 					case "websites":
 						// prepare url string concat CensysSearchURL and CensysIndex & check if censys-index argument is valid. If not FATAL
 						urlConcat = censys.CensysUrlSearch + "/" + censys.CensysIndexWebsites
-						//
-						//log.Println("Prepare call to: ", urlConcat)
-						//// Call Censys search method
-						//body := censys.ClientCensys(CensysApiId, CensysApiSecret, urlConcat, 30, "POST", censys.CensysHeaderUserAgent, censys.CensysHeaderAccept, jsonMarshaled)
-						//
-						//// Prettify print of the json
-						//utils.PrettifyPrint(body)
 
 					default:
 						log.Fatalln(" A valid censys-index argument need to be pass. We're accepting: websites, ipv4 or certificates.")

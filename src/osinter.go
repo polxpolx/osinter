@@ -3,8 +3,9 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/reg0l/osinter/src/censys"
-	"github.com/reg0l/osinter/src/utils"
+	"github.com/polxpolx/osinter/src/censys"
+	"github.com/polxpolx/osinter/src/utils"
+	"github.com/polxpolx/osinter/src/secutrails"
 	"log"
 	"os"
 )
@@ -33,8 +34,16 @@ func main() {
 	censysindex := flag.String("censys-index", "", "Censys.io index for the search method.")
 	censyspage := flag.Int("censys-page", 1, "Censys.io pages number when search api invocked")
 	censysflatten := flag.Bool("censys-flatten", true, "Format the censys's search api results. Default is true")
+	stping := flag.Bool("secutrails", true, "Test if the security trails api key works fine ")
 	flag.Parse()
 
+	if *domain && *stping{
+		ctApiKey := os.Getenv("CT_APIKEY")
+
+		if ctApiKey != "" {
+			secutrails.
+		}
+	}
 	if *whois && *domain != "" {
 		getWhois(*domain)
 	}

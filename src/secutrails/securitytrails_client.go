@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func clientSecuTrails(URL string, HttpMethod string, ApiKey string, json []byte) []byte {
+func clientST(URL string, HttpMethod string, ApiKey string, json []byte) []byte {
 	client := &http.Client{}
 
 	req, err := http.NewRequest(HttpMethod, URL, bytes.NewBuffer(json))
@@ -28,7 +28,8 @@ func clientSecuTrails(URL string, HttpMethod string, ApiKey string, json []byte)
 		log.Printf("%s", bodybyte)
 		log.Fatal("Fatal error !")
 	}
-
+	bodybyte, err := ioutil.ReadAll(resp.Body)
+	return bodybyte
 }
 
 func Checkerr(err error) {
